@@ -1,0 +1,43 @@
+version: '3.7'
+
+services:
+  traefik:
+    command:
+      - "--api.insecure=false"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
+      - "--certificatesresolvers.myresolver.acme.email=atrawog@gmail.com"
+      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - "./letsencrypt:/letsencrypt"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.web.entrypoints=web"
+      - "traefik.http.routers.websecure.rule=Host(`beta.mamba.pm`)"
+      - "traefik.http.routers.websecure.entrypoints=websecure"
+      - "traefik.http.routers.websecure.tls.certresolver=myresolver"
+
+  quetz:
+    build: .
+    depends_on:
+      - db
+    labels:
+      - "traefik.http.routers.web.rule=Host(`beta.mamba.pm`)"
+      - "traefik.http.services.web.loadbalancer.server.port=8000"
+    volumes:
+    - .:/workspace:cached
+    args:
+      CONFIG_TOML_PATH: config_prod.toml
+
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: quetz
+      POSTGRES_PASSWORD: 561b6f9fd2dd3fb8d6eb93c7567244fd0b1124457aeb0d735dd6d7aaa17c91e9
+      POSTGRES_DB: quetz
+    volumes:
+      - db-data:/var/lib/postgresql/data
