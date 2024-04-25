@@ -83,7 +83,14 @@ ENTRYPOINT ["startup.sh"]
 
 USER $MAMBA_USER
 
-RUN cd /code && git clone https://github.com/mamba-org/quetz.git
+#ARG QUETZ_BRANCH=v0.10.4
+ARG QUETZ_BRANCH=main
+#ARG QUETZ_BRANCH=5929467
+#ARG QUETZ_REPO=https://github.com/mamba-org/quetz.git
+ARG QUETZ_REPO=https://github.com/atrawog/quetz.git
+
+RUN cd /code && git clone -b $QUETZ_BRANCH --depth 1 $QUETZ_REPO
+RUN cd /code/quetz && pip install . --no-cache
 RUN cd /code/quetz/plugins/quetz_runexports && pip install . --no-cache
 RUN cd /code/quetz/plugins/quetz_repodata_patching && pip install . --no-cache
 RUN cd /code/quetz/plugins/quetz_current_repodata && pip install . --no-cache
