@@ -61,3 +61,6 @@ dependencies:
   - pytest-asyncio
   - pytest-timeout
   - pydantic >=2
+  - boto3
+  - python-dotenv
+  - awscli
