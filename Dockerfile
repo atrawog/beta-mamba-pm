@@ -115,3 +115,4 @@ RUN chmod +x /usr/local/bin/startup.sh
 ENTRYPOINT ["startup.sh"]
 
 USER $MAMBA_USER
+WORKDIR /workspace

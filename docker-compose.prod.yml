@@ -45,6 +45,7 @@ services:
       - "traefik.http.routers.quetz.tls.certresolver=myresolver"
       - "traefik.http.services.quetz.loadbalancer.server.port=8000"
     volumes:
+      - .:/workspace:cached
       - "./data/prod/quetz:/data"
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
