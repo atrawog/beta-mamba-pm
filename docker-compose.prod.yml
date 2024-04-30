@@ -15,6 +15,9 @@ services:
       - "443:443"
     volumes:
       - "./data/prod/letsencrypt:/letsencrypt"
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - DOCKER_HOST=unix:///var/run/docker.sock
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.http-catchall.rule=hostregexp(`{host:.+}`)"
@@ -43,3 +46,6 @@ services:
       - "traefik.http.services.quetz.loadbalancer.server.port=8000"
     volumes:
       - "./data/prod/quetz:/data"
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - DOCKER_HOST=unix:///var/run/docker.sock
