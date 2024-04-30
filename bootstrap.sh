@@ -1,3 +1,3 @@
 #!/bin/bash
 
-mkdir -p ./data/{test,prod}/{quetz,postgres}
+mkdir -p ./data/{test,prod}/{quetz,postgres,letsencrypt}
