@@ -21,6 +21,7 @@
 		"ms-vscode-remote.vscode-remote-extensionpack",
 		"GitHub.copilot",
 		"GitHub.copilot-chat",
+		"ckolkman.vscode-postgres"
 		],
 	"remoteUser": "jovian",
 	"settings": { 
