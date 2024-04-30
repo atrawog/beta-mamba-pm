@@ -11,18 +11,17 @@
 
 	"dockerComposeFile": "../docker-compose.yml",
   	"service": "quetz",
-
 	"extensions": [	
-				"ms-python.python",
-				"ms-python.vscode-pylance",
-				"ms-toolsai.jupyter",
-				"ms-azuretools.vscode-docker",
-				"ms-vscode.makefile-tools",
-				"ms-vscode-remote.remote-containers",
-				"ms-vscode-remote.vscode-remote-extensionpack",
-				"GitHub.copilot",
-				"GitHub.copilot-chat",
-				],
+		"ms-python.python",
+		"ms-python.vscode-pylance",
+		"ms-toolsai.jupyter",
+		"ms-azuretools.vscode-docker",
+		"ms-vscode.makefile-tools",
+		"ms-vscode-remote.remote-containers",
+		"ms-vscode-remote.vscode-remote-extensionpack",
+		"GitHub.copilot",
+		"GitHub.copilot-chat",
+		],
 	"remoteUser": "jovian",
 	"settings": { 
 		"terminal.integrated.shell.linux": "/bin/bash",

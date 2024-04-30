@@ -1,0 +1,7 @@
+---
+- name: Deploy Lokal
+  hosts: local
+  gather_facts: yes
+
+  roles:
+    - docker

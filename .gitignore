@@ -65,3 +65,6 @@ junit.xml
 # ms IDE stuff
 .history
 .vscode
+
+# Data
+data/*

@@ -64,3 +64,5 @@ dependencies:
   - boto3
   - python-dotenv
   - awscli
+  - ansible
+  - ansible-lint

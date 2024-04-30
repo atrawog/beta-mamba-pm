@@ -66,19 +66,12 @@ RUN --mount=type=cache,target=/var/cache/apt,id=apt-deb12 apt-get update && xarg
 RUN usermod -aG sudo $MAMBA_USER
 RUN echo "$MAMBA_USER ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
-COPY fix-permissions.sh /bin/fix-permissions.sh
-RUN chmod +x /bin/fix-permissions.sh && \
-    echo 'export MAMBA_USER_ID=$(id -u)' >> /home/$MAMBA_USER/.bashrc && \
+RUN echo 'export MAMBA_USER_ID=$(id -u)' >> /home/$MAMBA_USER/.bashrc && \
     echo 'export MAMBA_USER_GID=$(id -g)' >> /home/$MAMBA_USER/.bashrc && \
-    echo "/bin/fix-permissions.sh" >> /home/$MAMBA_USER/.bashrc && \
     echo "micromamba activate" >> /home/$MAMBA_USER/.bashrc
 
 RUN mkdir -p /code && chown -R $MAMBA_USER:$MAMBA_USER /code
 RUN mkdir -p /data && chown -R $MAMBA_USER:$MAMBA_USER /data
-
-COPY startup.sh /usr/local/bin/startup.sh
-RUN chmod +x /usr/local/bin/startup.sh
-ENTRYPOINT ["startup.sh"]
 
 
 USER $MAMBA_USER
@@ -104,10 +97,21 @@ RUN cd /code &&  git clone https://github.com/mamba-org/quetz-frontend.git
 RUN cd /code/quetz-frontend && pip install . --no-cache --no-deps
 RUN quetz-frontend link-frontend
 
-ARG CONFIG_TOML_PATH=config.toml
+#ARG CONFIG_TOML_PATH=config.toml
+#COPY --chown=$MAMBA_USER:$MAMBA_USER ${CONFIG_TOML_PATH}  /data/config.toml
+#RUN cd /data && quetz create --create-conf /data/quetz
 
-COPY --chown=$MAMBA_USER:$MAMBA_USER ${CONFIG_TOML_PATH}  /data/config.toml
-RUN cd /data && quetz create --create-conf /data/quetz
+COPY --chown=$MAMBA_USER:$MAMBA_USER ./ansible /ansible
+WORKDIR /ansible
+RUN ./deploy-local.sh
 
 EXPOSE 8000
 
+USER root
+
+
+COPY startup.sh /usr/local/bin/startup.sh
+RUN chmod +x /usr/local/bin/startup.sh
+ENTRYPOINT ["startup.sh"]
+
+USER $MAMBA_USER
