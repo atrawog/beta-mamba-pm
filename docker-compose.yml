@@ -6,7 +6,7 @@ services:
       - "--providers.docker"
       - "--entrypoints.web.address=:80"
     ports:
-      - "80:80"
+      - "88:80"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
 
@@ -17,7 +17,7 @@ services:
       POSTGRES_PASSWORD: quetz
       POSTGRES_DB: quetz
     volumes:
-      - ./data/postgresql:/var/lib/postgresql/data
+      - ./data/test/postgres:/var/lib/postgresql/data
 
 
   quetz:
@@ -29,7 +29,7 @@ services:
       - "traefik.http.services.web.loadbalancer.server.port=8000"
     volumes:
     - .:/workspace:cached
-    - ./data/quetz:/data
+    - ./data/test/quetz:/data
     - /var/run/docker.sock:/var/run/docker.sock
     environment:
       - DOCKER_HOST=unix:///var/run/docker.sock
