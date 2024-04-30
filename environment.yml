@@ -66,3 +66,4 @@ dependencies:
   - awscli
   - ansible
   - ansible-lint
+  - ovh
