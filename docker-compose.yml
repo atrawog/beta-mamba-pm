@@ -17,8 +17,7 @@ services:
       POSTGRES_PASSWORD: quetz
       POSTGRES_DB: quetz
     volumes:
-      - ./data/test/postgres:/var/lib/postgresql/data
-
+      - /data/beta-mamba-pm/test/postgres:/var/lib/postgresql/data
 
   quetz:
     build: .
@@ -29,7 +28,7 @@ services:
       - "traefik.http.services.web.loadbalancer.server.port=8000"
     volumes:
     - .:/workspace:cached
-    - ./data/test/quetz:/data
+    - /data/beta-mamba-pm/test/quetz:/data
     - /var/run/docker.sock:/var/run/docker.sock
     environment:
       - DOCKER_HOST=unix:///var/run/docker.sock
