@@ -6,6 +6,7 @@ if sudo -l &>/dev/null; then
     USER_GID=$(id -g)
 
     sudo chown -R $USER_UID:$USER_GID /var/run/docker.sock
+    sudo chown -R $USER_UID:$USER_GID /data
 fi
 
 

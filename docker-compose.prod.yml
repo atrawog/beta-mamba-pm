@@ -46,7 +46,7 @@ services:
       - "traefik.http.services.quetz.loadbalancer.server.port=8000"
     volumes:
       - .:/workspace:cached
-      - "./data/prod/quetz:/data"
+      - "/data/beta-mamba-pm/prod/prod/quetz:/data"
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
       - DOCKER_HOST=unix:///var/run/docker.sock
