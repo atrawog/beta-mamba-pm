@@ -28,8 +28,8 @@ services:
   db:
     image: postgres:13
     environment:
-      POSTGRES_USER: quetz
-      POSTGRES_PASSWORD: quetz
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
       POSTGRES_DB: quetz
     volumes:
       - /data/beta-mamba-pm/prod/postgres:/var/lib/postgresql/data
@@ -46,7 +46,7 @@ services:
       - "traefik.http.services.quetz.loadbalancer.server.port=8000"
     volumes:
       - .:/workspace:cached
-      - "/data/beta-mamba-pm/prod/prod/quetz:/data"
+      - "/data/beta-mamba-pm/prod/quetz:/data"
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
       - DOCKER_HOST=unix:///var/run/docker.sock

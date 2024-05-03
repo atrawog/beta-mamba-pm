@@ -7,8 +7,8 @@ if sudo -l &>/dev/null; then
 
     sudo chown -R $USER_UID:$USER_GID /var/run/docker.sock
     sudo chown -R $USER_UID:$USER_GID /data
+    sudo wait-for-it.sh db:5432
 fi
 
-
-cd /data && quetz create --create-conf /data/beta
-cd /data/beta && quetz start . --port 8000 --host 0.0.0.0 --proxy-headers --reload --log-level=trace
+quetz init-db /data
+quetz start /data --port 8000 --host 0.0.0.0 --proxy-headers --reload --log-level=trace

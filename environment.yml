@@ -7,7 +7,7 @@ dependencies:
   - yarn=1.22
   - sqlalchemy
   - sqlalchemy-utils
-  - conda-build
+  - conda-build<=24.1.2
   - conda-index
   - psycopg2
   - xattr

@@ -78,9 +78,9 @@ USER $MAMBA_USER
 
 #ARG QUETZ_BRANCH=v0.10.4
 ARG QUETZ_BRANCH=main
-#ARG QUETZ_BRANCH=5929467
-#ARG QUETZ_REPO=https://github.com/mamba-org/quetz.git
-ARG QUETZ_REPO=https://github.com/atrawog/quetz.git
+ARG QUETZ_BRANCH=v0.10.3
+ARG QUETZ_REPO=https://github.com/mamba-org/quetz.git
+#ARG QUETZ_REPO=https://github.com/atrawog/quetz.git
 
 RUN cd /code && git clone -b $QUETZ_BRANCH --depth 1 $QUETZ_REPO
 RUN cd /code/quetz && pip install . --no-cache
@@ -109,9 +109,9 @@ EXPOSE 8000
 
 USER root
 
-
-COPY startup.sh /usr/local/bin/startup.sh
-RUN chmod +x /usr/local/bin/startup.sh
+COPY wait-for-it.sh /usr/bin/wait-for-it.sh
+COPY startup.sh /usr/bin/startup.sh
+RUN chmod +x /usr/bin/startup.sh
 ENTRYPOINT ["startup.sh"]
 
 USER $MAMBA_USER
