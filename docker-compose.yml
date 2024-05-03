@@ -13,8 +13,8 @@ services:
   db:
     image: postgres:13
     environment:
-      POSTGRES_USER: quetz
-      POSTGRES_PASSWORD: quetz
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
       POSTGRES_DB: quetz
     volumes:
       - /data/beta-mamba-pm/test/postgres:/var/lib/postgresql/data
