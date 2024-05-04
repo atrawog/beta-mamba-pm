@@ -35,5 +35,5 @@ fi
 
 # Loop indefinitely
 while true; do
-    sleep 1  # Sleeps for 1 second to avoid high CPU usage
+    sleep 1
 done

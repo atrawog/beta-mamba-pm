@@ -67,3 +67,4 @@ dependencies:
   - ansible
   - ansible-lint
   - ovh
+  - mamba

@@ -21,20 +21,7 @@ client = ovh.Client(
 )
 
 add_record(client, domain, 'quant-prod-quetz-4.mamba.pm.', 'A',  '162.19.52.159')
+add_record(client, domain, 'quant-prod-quetz-4-repo.mamba.pm.', 'CNAME', 'quant-prod-quetz-4.mamba.pm.')
 
-# add_record(client, domain, beta_host, 'CNAME', target)
-
-# Delete and add records for beta and repo subdomains
-# delete_records(client, domain, beta_host, 'A')
-# delete_records(client, domain, beta_host, 'CNAME')
-# add_record(client, domain, beta_host, 'CNAME', target)
-# add_record(client, domain, beta_host, 'CNAME', target)
-
-# delete_records(client, domain, repo_host, 'A')
-# delete_records(client, domain, repo_host, 'CNAME')
-# add_record(client, domain, repo_host, 'CNAME', target)
-# add_record(client, domain, repo_host, 'CNAME', target)
-
-# Refresh the domain's DNS zone
 endpoint = f'/domain/zone/{domain}/refresh'
 client.post(endpoint)
