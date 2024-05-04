@@ -3,6 +3,8 @@ services:
     image: traefik:v2.5
     command:
       - "--api.insecure=true"
+      #- "--api.dashboard=true"  # Enable Traefik dashboard
+      - "--log.level=DEBUG"     # Set log level to DEBUG
       - "--providers.docker"
       - "--entrypoints.web.address=:80"
       - "--entrypoints.websecure.address=:443"
@@ -10,11 +12,16 @@ services:
       - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
       - "--certificatesresolvers.myresolver.acme.httpchallenge=true"
       - "--certificatesresolvers.myresolver.acme.httpchallenge.entrypoint=web"
+      - "--accesslog.filepath=/data/access.log"  # Specify path for access logs
+      - "--accesslog.format=json"  # Set access log format to JSON for easier parsing
+ 
     ports:
       - "80:80"
       - "443:443"
+      #- "8080:8080"
     volumes:
       - ./data/prod/letsencrypt:/letsencrypt
+      - ./data/prod/traefik:/data
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
       - DOCKER_HOST=unix:///var/run/docker.sock
@@ -24,6 +31,10 @@ services:
       - "traefik.http.routers.http-catchall.entrypoints=web"
       - "traefik.http.routers.http-catchall.middlewares=redirect-to-https"
       - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
+      # Define rewrite middleware
+      - "traefik.http.middlewares.rewrite-path.redirectregex.regex=^/(.*)"
+      - "traefik.http.middlewares.rewrite-path.redirectregex.replacement=/get/$$1"
+      - "traefik.http.middlewares.rewrite-path.redirectregex.permanent=true"
 
   db:
     image: postgres:13
@@ -36,21 +47,23 @@ services:
 
   quetz:
     build: .
-    #ports:
-    #  - "8000:8000"
     depends_on:
       - db
     labels:
-    - "traefik.enable=true"
-    - "traefik.http.routers.quetz.rule=Host(`quant-prod-quetz-4.mamba.pm`,`quant-prod-quetz-4-repo.mamba.pm`)"
-    - "traefik.http.routers.quetz.entrypoints=websecure"
-    - "traefik.http.routers.quetz.tls.certresolver=myresolver"
-    - "traefik.http.services.quetz.loadbalancer.server.port=8000"
-  
+      - "traefik.enable=true"
+      # Router for quant-prod-quetz-4.mamba.pm
+      - "traefik.http.routers.quetz.rule=Host(`quant-prod-quetz-4.mamba.pm`)"
+      - "traefik.http.routers.quetz.entrypoints=websecure"
+      - "traefik.http.routers.quetz.tls.certresolver=myresolver"
+      - "traefik.http.services.quetz.loadbalancer.server.port=8000"
+      # Router for quant-prod-quetz-4-repo.mamba.pm with rewrite rule
+      - "traefik.http.routers.quetz-repo.rule=Host(`quant-prod-quetz-4-repo.mamba.pm`)"
+      - "traefik.http.routers.quetz-repo.entrypoints=websecure"
+      - "traefik.http.routers.quetz-repo.tls.certresolver=myresolver"
+      - "traefik.http.routers.quetz-repo.middlewares=rewrite-path"
     volumes:
       - .:/workspace:cached
       - ./data/prod/quetz:/data
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
       - DOCKER_HOST=unix:///var/run/docker.sock
-
