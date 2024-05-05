@@ -66,7 +66,7 @@ admins = ['github:atrawog', 'github:wolfv']
 
 [logging]
 level = "DEBUG"
-file = "quetz-prod4.log"
+file = "quetz.log"
 EOF
 
 echo "Configuration has been written to ./data/prod/quetz/config.toml"

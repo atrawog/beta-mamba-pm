@@ -13,3 +13,14 @@ def add_record(client, domain, subDomain, fieldType,target):
     endpoint = f'/domain/zone/{domain}/record'
     result = client.post(endpoint, fieldType=fieldType, subDomain=subDomain, target=target)
     print(f"POST {endpoint}", json.dumps(result, indent=4))
+
+def refresh(client, domain):
+    endpoint = f'/domain/zone/{domain}/refresh'
+    result = client.post(endpoint)
+    print(f"POST {endpoint}")
+
+def export(client, domain):
+    endpoint = f'/domain/zone/{domain}/export'
+    result = client.get(endpoint)
+    print(f"GET {endpoint}")
+    print(result)
