@@ -7,6 +7,9 @@ from dotenv import load_dotenv
 # Load environment variables from .env file
 load_dotenv()
 
+# Retrieve all current environment variables
+current_env = os.environ.copy()
+
 # Retrieve environment variables for AWS
 access_key = os.getenv('AWS_ACCESS_KEY_ID')
 secret_key = os.getenv('AWS_SECRET_ACCESS_KEY')
@@ -31,10 +34,10 @@ if not all([os_username, os_password, os_auth_url, os_tenant_name, os_tenant_id,
     exit(1)
 
 def run_command(command):
-    """Executes a command and handles the output."""
+    """Executes a command and handles the output, using the current environment variables."""
     print(f"Executing command: {command}")
     try:
-        result = subprocess.run(command, shell=True, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        result = subprocess.run(command, shell=True, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, env=current_env)
         print(result.stdout)
     except subprocess.CalledProcessError as e:
         print("Error executing command:", e.stderr)
