@@ -10,21 +10,9 @@ services:
       - ./data/prod/postgres:/var/lib/postgresql/data
 
   quetz:
-    build: .
+    image: beta-mamba-pm-quetz
     depends_on:
       - db
-    labels:
-      - "traefik.enable=true"
-      # Router for quant-prod-quetz-4.mamba.pm
-      - "traefik.http.routers.quetz.rule=Host(`quant-prod-quetz-4.mamba.pm`)"
-      - "traefik.http.routers.quetz.entrypoints=websecure"
-      - "traefik.http.routers.quetz.tls.certresolver=myresolver"
-      - "traefik.http.services.quetz.loadbalancer.server.port=8000"
-      # Router for quant-prod-quetz-4-repo.mamba.pm with rewrite rule
-      - "traefik.http.routers.quetz-repo.rule=Host(`quant-prod-quetz-4-repo.mamba.pm`)"
-      - "traefik.http.routers.quetz-repo.entrypoints=websecure"
-      - "traefik.http.routers.quetz-repo.tls.certresolver=myresolver"
-      - "traefik.http.routers.quetz-repo.middlewares=rewrite-path"
     volumes:
       - .:/workspace:cached
       - ./data/prod/quetz:/data
