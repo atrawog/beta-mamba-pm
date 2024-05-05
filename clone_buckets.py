@@ -14,6 +14,7 @@ endpoint_url = os.getenv('AWS_ENDPOINT_URL')
 aws_region = os.getenv('AWS_REGION')
 source_prefix = os.getenv('SOURCE_PREFIX')
 target_prefix = os.getenv('TARGET_PREFIX')
+bucket_list = os.getenv('BUCKET_LIST')
 
 def run_aws_cli_command(command):
     """Executes an AWS CLI command and handles the output."""
@@ -52,8 +53,13 @@ if __name__ == "__main__":
     # List all buckets
     all_buckets = list_buckets()
 
-    # Get all buckets that match the source prefix
-    buckets_to_clone = [bucket for bucket in all_buckets if bucket.startswith(source_prefix)]
+    # Process bucket list if specified
+    if bucket_list:
+        bucket_list = bucket_list.split(',')  # Split bucket list into individual names
+        buckets_to_clone = [source_prefix + name for name in bucket_list if (source_prefix + name) in all_buckets]
+    else:
+        # Get all buckets that match the source prefix
+        buckets_to_clone = [bucket for bucket in all_buckets if bucket.startswith(source_prefix)]
 
     for bucket in buckets_to_clone:
         new_bucket_name = target_prefix + bucket[len(source_prefix):]
