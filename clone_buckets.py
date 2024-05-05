@@ -1,4 +1,4 @@
-#!/usr/bin/env python 
+#!/usr/bin/env python
 
 import os
 import subprocess
@@ -10,7 +10,7 @@ load_dotenv()
 # Retrieve environment variables
 access_key = os.getenv('AWS_ACCESS_KEY_ID')
 secret_key = os.getenv('AWS_SECRET_ACCESS_KEY')
-endpoint_url = os.getenv('S3_ENDPOINT_URL')
+endpoint_url = os.getenv('AWS_ENDPOINT_URL')
 aws_region = os.getenv('AWS_REGION')
 source_prefix = os.getenv('SOURCE_PREFIX')
 target_prefix = os.getenv('TARGET_PREFIX')
@@ -26,34 +26,37 @@ def run_aws_cli_command(command):
     return result.stdout
 
 def list_buckets():
-    """Lists all S3 buckets and filters them by source prefix."""
+    """Lists all S3 buckets."""
     command = f"aws s3 ls --endpoint-url {endpoint_url} --region {aws_region}"
-    print(command)
     output = run_aws_cli_command(command)
     if output:
-        buckets = [line.split()[-1] for line in output.strip().split('\n')]
-        filtered_buckets = [bucket for bucket in buckets if bucket.startswith(source_prefix)]
-        return filtered_buckets
+        return [line.split()[-1] for line in output.strip().split('\n')]
     return []
 
-def create_bucket(bucket_name):
-    """Creates a new S3 bucket."""
-    command=f"aws s3 mb s3://{bucket_name} --endpoint-url {endpoint_url} --region {aws_region}"
-    print(command)
-    run_aws_cli_command(command)
+def create_bucket(bucket_name, existing_buckets):
+    """Creates a new S3 bucket if it does not already exist."""
+    if bucket_name not in existing_buckets:
+        command = f"aws s3 mb s3://{bucket_name} --endpoint-url {endpoint_url} --region {aws_region}"
+        print(command)
+        run_aws_cli_command(command)
+    else:
+        print(f"Bucket {bucket_name} already exists. Skipping creation.")
 
 def sync_buckets(source, target):
     """Syncs all contents from the source bucket to the target bucket."""
-    command=f"aws s3 sync s3://{source} s3://{target} --endpoint-url {endpoint_url} --region {aws_region}"
+    command = f"aws s3 sync s3://{source} s3://{target} --endpoint-url {endpoint_url} --region {aws_region}"
     print(command)
     run_aws_cli_command(command)
 
 if __name__ == "__main__":
+    # List all buckets
+    all_buckets = list_buckets()
+
     # Get all buckets that match the source prefix
-    buckets_to_clone = list_buckets()
+    buckets_to_clone = [bucket for bucket in all_buckets if bucket.startswith(source_prefix)]
 
     for bucket in buckets_to_clone:
         new_bucket_name = target_prefix + bucket[len(source_prefix):]
         print(f"\nSyncing {bucket} to {new_bucket_name}")
-        create_bucket(new_bucket_name)
+        create_bucket(new_bucket_name, all_buckets)
         sync_buckets(bucket, new_bucket_name)

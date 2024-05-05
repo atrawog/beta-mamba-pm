@@ -54,10 +54,10 @@ secret = "$SESSION_SECRET"
 https_only = "True"
 
 [s3]
-access_key = "$S3_ACCESS_KEY"
-secret_key = "$S3_SECRET_KEY"
-url = "$S3_URL"
-region = "$S3_REGION"
+access_key = "$AWS_ACCESS_KEY_ID"
+secret_key = "$AWS_SECRET_ACCESS_KEY"
+url = "$AWS_ENDPOINT_URL"
+region = "$AWS_REGION"
 bucket_prefix="quetz-prod4-"
 bucket_suffix=""
 
