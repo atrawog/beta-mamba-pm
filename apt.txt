@@ -17,3 +17,4 @@ util-linux
 iproute2
 iputils-ping
 procps
+liberasurecode-dev

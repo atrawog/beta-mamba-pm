@@ -65,7 +65,7 @@ bucket_suffix=""
 admins = ['github:atrawog', 'github:wolfv']
 
 [logging]
-level = "INFO"
+level = "DEBUG"
 file = "quetz-prod4.log"
 EOF
 

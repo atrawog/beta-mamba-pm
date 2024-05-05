@@ -68,3 +68,6 @@ dependencies:
   - ansible-lint
   - ovh
   - mamba
+  - python-novaclient
+  - python-swiftclient
+  - python-octaviaclient
