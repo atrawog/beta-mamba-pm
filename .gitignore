@@ -68,3 +68,10 @@ junit.xml
 
 # Data
 data/*
+
+# Secret
+.secrets
+
+# Certbot
+letsencrypt.log*
+.certbot.lock
