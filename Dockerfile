@@ -76,6 +76,9 @@ RUN mkdir -p /data && chown -R $MAMBA_USER:$MAMBA_USER /data
 
 USER $MAMBA_USER
 
+COPY --chown=$MAMBA_USER:$MAMBA_USER requirements.txt /opt/conda/environments/requirements.txt
+RUN --mount=type=cache,target=/home/jovian/.cache,id=cache pip install -r /opt/conda/environments/requirements.txt
+
 #ARG QUETZ_BRANCH=v0.10.4
 ARG QUETZ_BRANCH=main
 ARG QUETZ_BRANCH=v0.10.3
@@ -83,18 +86,18 @@ ARG QUETZ_REPO=https://github.com/mamba-org/quetz.git
 #ARG QUETZ_REPO=https://github.com/atrawog/quetz.git
 
 RUN cd /code && git clone -b $QUETZ_BRANCH --depth 1 $QUETZ_REPO
-RUN cd /code/quetz && pip install . --no-cache
+RUN --mount=type=cache,target=/home/jovian/.cache,id=cache cd /code/quetz && pip install .
 RUN cd /code/quetz/plugins/quetz_runexports && pip install . --no-cache
-RUN cd /code/quetz/plugins/quetz_repodata_patching && pip install . --no-cache
-RUN cd /code/quetz/plugins/quetz_current_repodata && pip install . --no-cache
-RUN cd /code/quetz/plugins/quetz_repodata_zchunk && pip install . --no-cache
-RUN cd /code/quetz/plugins/quetz_transmutation && pip install . --no-cache
-RUN pip install git+https://git@github.com/regro/libcflib@master --no-deps
-RUN cd /code/quetz/plugins/quetz_harvester && pip install . --no-cache --no-deps
-RUN cd /code/quetz/plugins/quetz_tos && pip install . --no-cache --no-deps
+RUN --mount=type=cache,target=/home/jovian/.cache,id=cache cd /code/quetz/plugins/quetz_repodata_patching && pip install .
+RUN --mount=type=cache,target=/home/jovian/.cache,id=cache cd /code/quetz/plugins/quetz_current_repodata && pip install .
+RUN --mount=type=cache,target=/home/jovian/.cache,id=cache cd /code/quetz/plugins/quetz_repodata_zchunk && pip install .
+RUN --mount=type=cache,target=/home/jovian/.cache,id=cache cd /code/quetz/plugins/quetz_transmutation && pip install .
+# RUN --mount=type=cache,target=/home/jovian/.cache,id=cache pip install git+https://git@github.com/regro/libcflib@master
+RUN --mount=type=cache,target=/home/jovian/.cache,id=cache cd /code/quetz/plugins/quetz_harvester && pip install . --no-deps
+RUN --mount=type=cache,target=/home/jovian/.cache,id=cache cd /code/quetz/plugins/quetz_tos && pip install . --no-deps
 
 RUN cd /code &&  git clone https://github.com/mamba-org/quetz-frontend.git
-RUN cd /code/quetz-frontend && pip install . --no-cache --no-deps
+RUN --mount=type=cache,target=/home/jovian/.cache,id=cache cd /code/quetz-frontend && pip install . --no-deps
 RUN quetz-frontend link-frontend
 
 #ARG CONFIG_TOML_PATH=config.toml
