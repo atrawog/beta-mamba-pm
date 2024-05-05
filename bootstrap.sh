@@ -11,9 +11,9 @@ fi
 if sudo -l &>/dev/null; then
     USER_UID=$(id -u)
     USER_GID=$(id -g)
-    sudo mkdir -p ./data/{test,prod}/{quetz,postgres,letsencrypt,traefik}
+    sudo mkdir -p ./data/{test,prod}/{quetz,postgres,letsencrypt,traefik,nginx}
     sudo chown -R $USER_UID:$USER_GID ./data
-    sudo chown -R $USER_UID:$USER_GID ./data/{test,prod}/{quetz,letsencrypt,traefik}
+    sudo chown -R $USER_UID:$USER_GID ./data/{test,prod}/{quetz,letsencrypt,traefik,nginx}
     sudo chown -R 999:$USER_GID ./data/{test,prod}/postgres
 
 fi

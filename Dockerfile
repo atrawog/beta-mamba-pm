@@ -87,22 +87,17 @@ ARG QUETZ_REPO=https://github.com/mamba-org/quetz.git
 
 RUN cd /code && git clone -b $QUETZ_BRANCH --depth 1 $QUETZ_REPO
 RUN --mount=type=cache,target=/home/jovian/.cache,id=cache cd /code/quetz && pip install .
-RUN cd /code/quetz/plugins/quetz_runexports && pip install . --no-cache
+RUN --mount=type=cache,target=/home/jovian/.cache,id=cache cd /code/quetz/plugins/quetz_runexports && pip install .
 RUN --mount=type=cache,target=/home/jovian/.cache,id=cache cd /code/quetz/plugins/quetz_repodata_patching && pip install .
 RUN --mount=type=cache,target=/home/jovian/.cache,id=cache cd /code/quetz/plugins/quetz_current_repodata && pip install .
 RUN --mount=type=cache,target=/home/jovian/.cache,id=cache cd /code/quetz/plugins/quetz_repodata_zchunk && pip install .
 RUN --mount=type=cache,target=/home/jovian/.cache,id=cache cd /code/quetz/plugins/quetz_transmutation && pip install .
-# RUN --mount=type=cache,target=/home/jovian/.cache,id=cache pip install git+https://git@github.com/regro/libcflib@master
-RUN --mount=type=cache,target=/home/jovian/.cache,id=cache cd /code/quetz/plugins/quetz_harvester && pip install . --no-deps
-RUN --mount=type=cache,target=/home/jovian/.cache,id=cache cd /code/quetz/plugins/quetz_tos && pip install . --no-deps
+RUN --mount=type=cache,target=/home/jovian/.cache,id=cache cd /code/quetz/plugins/quetz_harvester && pip install .
+RUN --mount=type=cache,target=/home/jovian/.cache,id=cache cd /code/quetz/plugins/quetz_tos && pip install .
 
 RUN cd /code &&  git clone https://github.com/mamba-org/quetz-frontend.git
-RUN --mount=type=cache,target=/home/jovian/.cache,id=cache cd /code/quetz-frontend && pip install . --no-deps
+RUN --mount=type=cache,target=/home/jovian/.cache,id=cache cd /code/quetz-frontend && pip install .
 RUN quetz-frontend link-frontend
-
-#ARG CONFIG_TOML_PATH=config.toml
-#COPY --chown=$MAMBA_USER:$MAMBA_USER ${CONFIG_TOML_PATH}  /data/config.toml
-#RUN cd /data && quetz create --create-conf /data/quetz
 
 COPY --chown=$MAMBA_USER:$MAMBA_USER ./ansible /ansible
 WORKDIR /ansible
