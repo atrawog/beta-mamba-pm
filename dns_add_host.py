@@ -20,9 +20,9 @@ client = ovh.Client(
     consumer_key=consumer_key,
 )
 
-delete_records(client, domain, 'quant-prod-quetz-4.mamba.pm.', 'A')
-add_record(client, domain, 'quant-prod-quetz-4.mamba.pm.', 'A',  '51.178.59.67')
-add_record(client, domain, 'quant-prod-quetz-4-repo.mamba.pm.', 'CNAME', 'quant-prod-quetz-4.mamba.pm.')
+delete_records(client, domain, 'quant-prod-quetz-5.mamba.pm.', 'A')
+add_record(client, domain, 'quant-prod-quetz-5.mamba.pm.', 'A',  '51.210.37.115')
+add_record(client, domain, 'quant-prod-quetz-5-repo.mamba.pm.', 'CNAME', 'quant-prod-quetz-5.mamba.pm.')
 
 endpoint = f'/domain/zone/{domain}/refresh'
 client.post(endpoint)

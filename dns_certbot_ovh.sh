@@ -5,6 +5,6 @@ certbot certonly --force-renewal  \
 --cert-name beta.mamba.pm \
 -d beta.mamba.pm  \
 -d repo.mamba.pm  \
--d quant-prod-quetz-4.mamba.pm \
--d quant-prod-quetz-4-repo.mamba.pm \
+-d quant-prod-quetz-5.mamba.pm \
+-d quant-prod-quetz-5-repo.mamba.pm \
 --work-dir ./data/prod/letsencrypt --config-dir ./data/prod/letsencrypt --logs-dir .

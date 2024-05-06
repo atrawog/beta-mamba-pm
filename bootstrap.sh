@@ -58,7 +58,7 @@ access_key = "$AWS_ACCESS_KEY_ID"
 secret_key = "$AWS_SECRET_ACCESS_KEY"
 url = "$AWS_ENDPOINT_URL"
 region = "$AWS_REGION"
-bucket_prefix="quetz-prod4-"
+bucket_prefix="quetz-prod5-"
 bucket_suffix=""
 
 [users]
@@ -133,7 +133,7 @@ server {
         listen [::]:80;
 
         listen 443 ssl;
-        server_name quant-prod-quetz-4-repo.mamba.pm  repo.mamba.pm;
+        server_name quant-prod-quetz-5-repo.mamba.pm  repo.mamba.pm;
 
         rewrite ^/(.*)$ /get/$1 break;
 
@@ -173,7 +173,7 @@ server {
 
 
     server {
-        server_name quant-prod-quetz-4.mamba.pm  beta.mamba.pm;
+        server_name quant-prod-quetz-5.mamba.pm  beta.mamba.pm;
 
         listen 80 default_server;
         listen [::]:80 default_server;
