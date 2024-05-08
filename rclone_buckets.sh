@@ -1,0 +1,1 @@
+rclone sync --config .secrets/rclone.conf ovh-swift:quetz-prod4-emscripten-forge ovh-s3api:quetz-em0-emscripten-forge

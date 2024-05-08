@@ -71,3 +71,4 @@ dependencies:
   - python-novaclient
   - python-swiftclient
   - python-octaviaclient
+  - rclone
